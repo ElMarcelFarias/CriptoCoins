@@ -29,6 +29,7 @@ class GenericStoreRequest: GerericStoreProtocol {
     
     var error = NSError(domain:"", code: 901 , userInfo: [NSLocalizedDescriptionKey: "Error codding"]) as Error
     // BUSCA HTTP ASSINCRONA
+    // função genérica
     func request<T: Codable>(url: URL, completion: @escaping completion<T?>){
         
         

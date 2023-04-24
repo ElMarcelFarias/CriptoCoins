@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 struct CurrentDataModel: Codable {
     let id: String
     let symbol: String
