@@ -29,7 +29,10 @@ class GenericStoreRequest: GerericStoreProtocol {
     
     var error = NSError(domain:"", code: 901 , userInfo: [NSLocalizedDescriptionKey: "Error codding"]) as Error
     // BUSCA HTTP ASSINCRONA
+    // função genérica
     func request<T: Codable>(url: URL, completion: @escaping completion<T?>){
+        
+        
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 return completion(nil, self.error)
@@ -48,6 +51,8 @@ class GenericStoreRequest: GerericStoreProtocol {
                 completion(nil, error)
             }
         }
+        
+        
         //Aqui ele está dando um resume() na variável task, depois de toda as validações e do JSONdecoder
         task.resume()
     }
