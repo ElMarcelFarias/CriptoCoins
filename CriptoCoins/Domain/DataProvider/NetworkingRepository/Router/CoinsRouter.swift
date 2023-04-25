@@ -34,7 +34,7 @@ enum CoinsRouter {
     // Agora precisamos disso em formato de URL
     // para isso serve essa func abaixo.
     
-    func asUrlRequest() throws -> URL? {
+    func asURLRequest() throws -> URL? {
         guard let url = URL(string: API.baseUrl) else { return nil }
         
         switch self {
