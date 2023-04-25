@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GlobalModel {
+struct GlobalModel: Codable {
     let data: DataGlobalCoin
 }
 
