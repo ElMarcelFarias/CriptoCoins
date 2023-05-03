@@ -69,7 +69,10 @@ enum CoinsList {
                 let priceChangePercentage: String
                 let marketCapitalization: String
             }
+            
+            let coins: [Coin]
         }
+        
         
     }
 }
