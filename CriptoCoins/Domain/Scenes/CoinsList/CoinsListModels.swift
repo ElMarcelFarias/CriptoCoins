@@ -21,8 +21,8 @@ enum CoinsList {
         
         struct Response {
             let baseCoin: String
-            let totalMarketCap: [String:String]
-            let totalVolue: [String:String]
+            let totalMarketCap: [String:Double]
+            let totalVolue: [String:Double]
         }
         
         struct ViewModel {

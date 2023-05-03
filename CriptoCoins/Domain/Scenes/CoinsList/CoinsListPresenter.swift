@@ -12,20 +12,17 @@
 
 import UIKit
 
-protocol CoinsListPresentationLogic
-{
-  func presentSomething(response: CoinsList.Something.Response)
+protocol CoinsListPresentationLogic {
+    func presentGlobalValues(response: CoinsList.FetchGlobalValues.Response)
+    func presentListCoins(response: CoinsList.FetchListCoins.Response)
+    func presentError(error: CryptocurrenciesError)
 }
 
-class CoinsListPresenter: CoinsListPresentationLogic
-{
-  weak var viewController: CoinsListDisplayLogic?
+class CoinsListPresenter: CoinsListPresentationLogic {
+    weak var viewController: CoinsListDisplayLogic?
+    
+    func presentGlobalValues(response: CoinsList.FetchGlobalValues.Response) {}
+    func presentListCoins(response: CoinsList.FetchListCoins.Response) {}
+    func presentError(error: CryptocurrenciesError) {}
   
-  // MARK: Do something
-  
-  func presentSomething(response: CoinsList.Something.Response)
-  {
-    let viewModel = CoinsList.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
-  }
 }
