@@ -12,50 +12,50 @@
 
 import UIKit
 
-protocol CoinsListDisplayLogic: class
-{
-  func displaySomething(viewModel: CoinsList.Something.ViewModel)
+protocol CoinsListDisplayLogic: AnyObject {
+    func displayGlobalValues(viewModel: CoinsList.FetchGlobalValues.ViewModel)
+    func displayListCoins(viewModel: CoinsList.FetchListCoins.ViewModel)
+    func displayError(error: String)
 }
 
-class CoinsListViewController: UIViewController, CoinsListDisplayLogic
-{
-  var interactor: CoinsListBusinessLogic?
-  var router: (NSObjectProtocol & CoinsListRoutingLogic & CoinsListDataPassing)?
+class CoinsListViewController: UIViewController {
+    
+    private var globalViewModel: CoinsList.FetchGlobalValues.ViewModel?
+    private var coinsViewModel: CoinsList.FetchListCoins.ViewModel?
+    
+    var interactor: CoinsListBusinessLogic?
+    var router: (NSObjectProtocol & CoinsListRoutingLogic & CoinsListDataPassing)?
 
   // MARK: Object lifecycle
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
-  {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    setup()
-  }
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle:   nibBundleOrNil)
+        setup()
+    }
   
-  required init?(coder aDecoder: NSCoder)
-  {
-    super.init(coder: aDecoder)
-    setup()
+  required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      setup()
   }
   
   // MARK: Setup
   
-  private func setup()
-  {
-    let viewController = self
-    let interactor = CoinsListInteractor()
-    let presenter = CoinsListPresenter()
-    let router = CoinsListRouter()
-    viewController.interactor = interactor
-    viewController.router = router
-    interactor.presenter = presenter
-    presenter.viewController = viewController
-    router.viewController = viewController
-    router.dataStore = interactor
+    private func setup() {
+        let viewController = self
+        let interactor = CoinsListInteractor()
+        let presenter = CoinsListPresenter()
+        let router = CoinsListRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
   }
   
   // MARK: Routing
   
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let scene = segue.identifier {
       let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
       if let router = router, router.responds(to: selector) {
@@ -66,24 +66,38 @@ class CoinsListViewController: UIViewController, CoinsListDisplayLogic
   
   // MARK: View lifecycle
   
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    doSomething()
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
-  func doSomething()
-  {
-    let request = CoinsList.Something.Request()
-    interactor?.doSomething(request: request)
-  }
-  
-  func displaySomething(viewModel: CoinsList.Something.ViewModel)
-  {
-    //nameTextField.text = viewModel.name
-  }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        doFetchGlobalValues()
+        doFetchListCoins()
+    }
+    
+    func doFetchGlobalValues() {
+        let request  = CoinsList.FetchGlobalValues.Request(baseCoin: "brl")
+        interactor?.doFethcGlobalValues(request: request)
+    }
+    
+    func doFetchListCoins() {
+        let request = CoinsList.FetchListCoins.Request(
+            baseCoin: "brl",
+            orderBy: "market_cap_desc",
+            top: 10,
+            pricePercentage: "1h"
+        )
+        interactor?.doFetchListCoins(request: request)
+    }
+}
+
+extension CoinsListViewController: CoinsListDisplayLogic {
+    func displayGlobalValues(viewModel: CoinsList.FetchGlobalValues.ViewModel) {
+        globalViewModel = viewModel
+    }
+    
+    func displayListCoins(viewModel: CoinsList.FetchListCoins.ViewModel){
+        coinsViewModel = viewModel
+    }
+    
+    func displayError(error: String){
+        print(error)
+    }
 }

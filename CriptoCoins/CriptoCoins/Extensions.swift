@@ -45,3 +45,27 @@ extension Error {
     }
     
 }
+
+extension Double {
+    func toCurrency() -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .currency
+        numberFormatter.locale = Locale(identifier: "pt_BR")
+        
+        guard let value = numberFormatter.string(from: NSNumber(value: self)) else {
+            return String(self)
+        }
+        
+        return value
+        
+    }
+    
+    func toPercentage() -> String {
+        let value = String(format: "%.1f", self).replacingOccurrences(of: "-", with: "")
+        if self.sign == .minus {
+            return "\u{2193} \(value)%"
+        } else {
+            return "\u{2191} \(value)%"
+        }
+    }
+}
